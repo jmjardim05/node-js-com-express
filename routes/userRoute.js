@@ -37,11 +37,7 @@ const userRoute = (app) => {
             const users = getUsers();
 
             if (req.params["id"] !== undefined) {
-                const user = users.filter((value) => {
-                    if (value.id === Number.parseInt(req.params["id"])) {
-                        return value
-                    }
-                });
+                const user = users.filter(value => value.id === Number.parseInt(req.params["id"]));
                 res.send({
                     users: user
                 });
@@ -58,6 +54,43 @@ const userRoute = (app) => {
             // pra ele transformar o body em objeto, precisa instalar um middleware body-parser
 
             res.sendStatus(201);
+        })
+        .put((req, res) => {
+            if (req.params["id"] === undefined)
+            {
+                res.status(400).send("Obrigatório informar o id");
+                return;
+            }
+
+            const users = getUsers();
+            // gera uma nova lista com os dados atualizados e salva no arquivo
+            saveUser(users.map(value => {
+                if (value.id === Number.parseInt(req.params["id"])) {                    
+                    return {
+                        ...value,
+                        ...req.body 
+                        // spread operator, o úlitmo que consta sobrepõe o primeiro, neste caso
+                        // foi feito o spread nos valores originais (value) e depois sobreescritos 
+                        // com o spread no objeto da requisição (req.body)
+                    }
+                }
+
+                return value;
+            }));
+
+            res.status(200).send("Updated");
+        })
+        .delete((req, res) => {
+            if (req.params["id"] === undefined)
+            {
+                res.status(400).send("Obrigatório informar o id");
+                return;
+            }
+
+            const users = getUsers();
+            saveUser(users.filter(value => value.id !== Number.parseInt(req.params["id"])));
+            
+            res.status(200).send("Removed");
         });
 }
 

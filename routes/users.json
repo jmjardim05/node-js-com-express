@@ -1,17 +1,12 @@
 [
 	{
 		"id": 1,
-		"nome": "João Marcos",
+		"nome": "João Marcos Jardim",
 		"idade": 34
 	},
 	{
 		"id": 2,
 		"nome": "Pedro Luiz",
 		"idade": 64
-	},
-	{
-		"id": 3,
-		"nome": "Iraci Ormes Retamiro",
-		"idade": 62
 	}
 ]
